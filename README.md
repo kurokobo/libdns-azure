@@ -64,8 +64,12 @@ func main() {
 	}
 
 	// List existing records
-	fmt.Printf("(1) List existing records\n")
-	currentRecords, _ := provider.GetRecords(context.TODO(), zone)
+	fmt.Printf("List existing records\n")
+	currentRecords, err := provider.GetRecords(context.TODO(), zone)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
 	for _, record := range currentRecords {
 		fmt.Printf("Exists: %v\n", record)
 	}

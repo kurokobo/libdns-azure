@@ -35,7 +35,11 @@ func main() {
 
 	// List existing records
 	fmt.Printf("(1) List existing records\n")
-	currentRecords, _ := provider.GetRecords(context.TODO(), zone)
+	currentRecords, err := provider.GetRecords(context.TODO(), zone)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
 	for _, record := range currentRecords {
 		fmt.Printf("Exists: %v\n", record)
 	}
@@ -72,24 +76,24 @@ func main() {
 			Value: "10 mail." + zone,
 			TTL:   time.Duration(34) * time.Second,
 		},
-		libdns.Record{
-			Type:  "NS",
-			Name:  zone,
-			Value: "ns1.example.com.",
-			TTL:   time.Duration(35) * time.Second,
-		},
+		// libdns.Record{
+		// 	Type:  "NS",
+		// 	Name:  zone,
+		// 	Value: "ns1.example.com.",
+		// 	TTL:   time.Duration(35) * time.Second,
+		// },
 		libdns.Record{
 			Type:  "PTR",
 			Name:  "record-ptr." + zone,
 			Value: "hoge." + zone,
 			TTL:   time.Duration(36) * time.Second,
 		},
-		libdns.Record{
-			Type:  "SOA",
-			Name:  "record-soa." + zone,
-			Value: "ns1.example.com. hostmaster." + zone + " 1 7200 900 1209600 86400",
-			TTL:   time.Duration(37) * time.Second,
-		},
+		// libdns.Record{
+		// 	Type:  "SOA",
+		// 	Name:  zone,
+		// 	Value: "ns1.example.com. hostmaster." + zone + " 1 7200 900 1209600 86400",
+		// 	TTL:   time.Duration(37) * time.Second,
+		// },
 		libdns.Record{
 			Type:  "SRV",
 			Name:  "record-srv." + zone,
@@ -105,21 +109,33 @@ func main() {
 
 	// Create new records
 	fmt.Printf("(2) Create new records\n")
-	createdRecords, _ := provider.AppendRecords(context.TODO(), zone, testRecords)
+	createdRecords, err := provider.AppendRecords(context.TODO(), zone, testRecords)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
 	for _, record := range createdRecords {
 		fmt.Printf("Created: %v\n", record)
 	}
 
 	// Update new records
 	fmt.Printf("(3) Update newly added records\n")
-	updatedRecords, _ := provider.SetRecords(context.TODO(), zone, testRecords)
+	updatedRecords, err := provider.SetRecords(context.TODO(), zone, testRecords)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
 	for _, record := range updatedRecords {
 		fmt.Printf("Updated: %v\n", record)
 	}
 
 	// Delete new records
 	fmt.Printf("(4) Delete newly added records\n")
-	deletedRecords, _ := provider.DeleteRecords(context.TODO(), zone, testRecords)
+	deletedRecords, err := provider.DeleteRecords(context.TODO(), zone, testRecords)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
 	for _, record := range deletedRecords {
 		fmt.Printf("Deleted: %v\n", record)
 	}

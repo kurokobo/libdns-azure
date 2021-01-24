@@ -32,7 +32,6 @@ func (p *Provider) NewClient() error {
 
 // getRecords gets all records in specified zone on Azure DNS.
 func (p *Provider) getRecords(ctx context.Context, zone string) ([]libdns.Record, error) {
-
 	var recordSets []*dns.RecordSet
 
 	pages, err := p.client.ListAllByDNSZone(
@@ -76,6 +75,7 @@ func (p *Provider) deleteRecord(ctx context.Context, zone string, record libdns.
 	if err != nil {
 		return record, err
 	}
+
 	_, err = p.client.Delete(
 		ctx,
 		p.ResourceGroupName,
@@ -85,7 +85,6 @@ func (p *Provider) deleteRecord(ctx context.Context, zone string, record libdns.
 		"",
 	)
 	if err != nil {
-		fmt.Printf("%v\n", err)
 		return record, err
 	}
 
@@ -95,7 +94,6 @@ func (p *Provider) deleteRecord(ctx context.Context, zone string, record libdns.
 // createOrUpdateRecord creates or updates a record.
 // The behavior depends on the value of ifNoneMatch, set to "*" to allow to create a new record but prevent updating an existing record.
 func (p *Provider) createOrUpdateRecord(ctx context.Context, zone string, record libdns.Record, ifNoneMatch string) (libdns.Record, error) {
-
 	recordType, err := convertStringToRecordType(record.Type)
 	if err != nil {
 		return record, err
@@ -117,7 +115,6 @@ func (p *Provider) createOrUpdateRecord(ctx context.Context, zone string, record
 		ifNoneMatch,
 	)
 	if err != nil {
-		fmt.Printf("%v\n", err)
 		return record, err
 	}
 
@@ -277,6 +274,8 @@ func convertAzureRecordSetsToLibdnsRecords(recordSets []*dns.RecordSet) ([]libdn
 					records = append(records, record)
 				}
 			}
+		default:
+			return []libdns.Record{}, fmt.Errorf("The type %v cannot be interpreted.", typeName)
 		}
 	}
 
@@ -429,6 +428,6 @@ func convertLibdnsRecordToAzureRecordSet(record libdns.Record) (dns.RecordSet, e
 		}
 		return recordSet, nil
 	default:
-		return dns.RecordSet{}, fmt.Errorf("The type %v is not implemented", record.Type)
+		return dns.RecordSet{}, fmt.Errorf("The type %v cannot be interpreted.", record.Type)
 	}
 }
