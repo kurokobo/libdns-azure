@@ -4,9 +4,11 @@ This package implements the libdns interfaces for the [Azure DNS API](https://do
 
 ## Authenticating
 
-This package supports authentication using Azure AD Application and Service Principal.
+This package supports authentication using the **Client Credentials** (Azure AD Application ID and Secret) through [azure-sdk-for-go](https://github.com/Azure/azure-sdk-for-go).
 
-You will need to create a service principal using [PowerShell](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-authenticate-service-principal-powershell), [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), or [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) and assign the following role to the DNS zones that you want to manage:
+You will need to create a service principal using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), and assign the **DNS Zone Contributor** role to the service principal for the DNS zones that you want to manage.
+
+Then keep the following information to authenticate:
 
 * DNS Zone Contributor
 
