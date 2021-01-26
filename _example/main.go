@@ -12,9 +12,7 @@ import (
 
 // main shows how libdns works with Azure DNS.
 //
-// To make this example work, you have to speficy some required environment variables:
-// AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_SUBSCRIPTION_ID,
-// AZURE_RESOURCE_GROUP_NAME, AZURE_DNS_ZONE_FQDN
+// In this example, the information required for authentication is passed as environment variables.
 func main() {
 
 	// Create new provider instance
@@ -26,12 +24,6 @@ func main() {
 		ResourceGroupName: os.Getenv("AZURE_RESOURCE_GROUP_NAME"),
 	}
 	zone := os.Getenv("AZURE_DNS_ZONE_FQDN")
-
-	// Invoke authentication and store client to instance
-	if err := provider.NewClient(); err != nil {
-		fmt.Printf("%v\n", err)
-		return
-	}
 
 	// List existing records
 	fmt.Printf("(1) List existing records\n")
