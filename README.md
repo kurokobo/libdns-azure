@@ -1,5 +1,7 @@
 # Azure DNS for `libdns`
 
+**UPDATE: This project has been moved to [libdns/azure](https://github.com/libdns/azure) and this repository is no longer maintained. See [libdns/azure](https://github.com/libdns/azure) for the latest release.**
+
 This package implements the libdns interfaces for the [Azure DNS API](https://docs.microsoft.com/en-us/rest/api/dns/).
 
 ## Authenticating
